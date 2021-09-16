@@ -5,23 +5,35 @@ import lazyLoadView from '@/router/lazyload-view';
 Vue.use(VueRouter);
 
 const routes = [
-	{
-		path: '/',
-		name: 'Home',
-		component: () => lazyLoadView(import('@/views/Home.vue'))
-	},
-	{
-		path: '/about',
-		name: 'About',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => lazyLoadView(import('@/views/About.vue'))
-	}
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: () => lazyLoadView(import('@/views/Home/Index.vue'))
+  // },
+  {
+    path: '/',
+    name: 'About',
+    component: () => lazyLoadView(import('@/views/About/Index.vue'))
+  },
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: () => lazyLoadView(import('@/views/Shop/Index.vue'))
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => lazyLoadView(import('@/views/Cart/Index.vue'))
+  },
+  {
+    path: '/FAQ',
+    name: 'FAQ',
+    component: () => lazyLoadView(import('@/views/Faq/Index.vue'))
+  }
 ];
 
 const router = new VueRouter({
-	routes
+  routes
 });
 
 export default router;
