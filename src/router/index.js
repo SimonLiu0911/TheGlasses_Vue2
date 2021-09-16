@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: '/FAQ',
-    name: 'FAQ',
+    name: 'Faq',
     component: () => lazyLoadView(import('@/views/Faq/Index.vue'))
   }
 ];

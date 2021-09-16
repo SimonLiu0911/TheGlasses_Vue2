@@ -1,4 +1,12 @@
-# theglasses_vue2
+# 電商網站 - The Glasses(重構)
+此作品為虛擬購物商店，銷售主題為Glasses，並包含前台API串接。
+
+## Demo:
+TBD
+
+## 重構部分:
+1. 利用lazyload-view加載每個頁面
+2. 設立一個layout底層
 
 ## Project setup
 ```
