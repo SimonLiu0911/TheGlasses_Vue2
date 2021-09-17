@@ -4,6 +4,10 @@ import router from './router';
 // Bootstrap4
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+// Bootstrap-notify
+import 'bootstrap-notify';
+// jquery
+import $ from 'jquery';
 // lodash
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
@@ -12,6 +16,11 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
 Vue.config.productionTip = false;
+
+window.jQuery = $;
+window.$ = $;
+
+Vue.prototype.$bus = new Vue();
 
 // 全局註冊Component
 const requireComponent = require.context(

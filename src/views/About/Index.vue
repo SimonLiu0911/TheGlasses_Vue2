@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <div :class="$style.home" class="text-center">
+    <div :id="$style.home" class="text-center">
       <h1 class="py-5">The Glasses</h1>
       <div :class="$style['background_image']"></div>
 
@@ -61,9 +61,15 @@
             class="pr-2"
             type="email"
             placeholder="Enter your email"
-            required
+            v-model="subscription.email"
           />
-          <button :class="$style.subscribe_btn" type="submit">Confirm</button>
+          <button
+            :class="$style.subscribe_btn"
+            type="button"
+            @click="onSubscribe"
+          >
+            Confirm
+          </button>
         </form>
       </section>
     </div>
@@ -71,6 +77,8 @@
 </template>
 
 <script>
+import * as utils from '@store/utils';
+
 export default {
   components: {
     Layout: () => import('@layout/main'),
@@ -111,14 +119,32 @@ export default {
               try and squeeze an extra penny from our customers through hidden markups.`,
           style: 'col-md-8 m-auto'
         }
-      ]
+      ],
+      subscription: {
+        email: '',
+        regExp: /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
+      }
     };
+  },
+  methods: {
+    onSubscribe() {
+      if (this.subscription.email === '') return;
+      switch (this.subscription.regExp.test(this.subscription.email)) {
+        case true:
+          utils.notifyAlert('訂閱成功', 'success');
+          this.subscription.email = '';
+          break;
+        case false:
+          utils.notifyAlert('請填寫正確Email', 'warning');
+          this.subscription.email = '';
+      }
+    }
   }
 };
 </script>
 
 <style lang="scss" module>
-.home {
+#home {
   .background_image {
     background-image: url("https://images.unsplash.com/photo-1587929373464-d5b6ddc340b5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1264&q=80");
     height: 50vh;

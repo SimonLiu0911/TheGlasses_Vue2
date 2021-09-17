@@ -7,6 +7,7 @@ TBD
 ## 重構部分:
 1. 利用lazyload-view加載每個頁面
 2. 設立一個layout底層
+3. 新稱plugin: Bootstrap-notify
 
 ## Project setup
 ```
