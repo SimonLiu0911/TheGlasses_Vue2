@@ -30,24 +30,24 @@ export default {
       </div>
       <ul class="nav justify-content-center mb-3">
         <li class="nav-item">
-          <a
-          :class="{'active': view === 'general'}"
-          class="nav-link text-dark faq_link"
-          href="javascript:;"
-          @click.prevent="changeView('general')"
+          <BaseButton
+            :class="{'active': view==='general'}"
+            class="nav-link text-dark faq_link"
+            href="javascript:;"
+            @click="changeView('general')"
           >
             GENERAL
-          </a>
+          </BaseButton>
         </li>
         <li class="nav-item">
-          <a
-          :class="{'active': view === 'discountcode'}"
-          class="nav-link text-dark faq_link"
-          href="javascript:;"
-          @click.prevent="changeView('discountcode')"
+          <BaseButton
+            :class="{'active': view==='discountcode'}"
+            class="nav-link text-dark faq_link"
+            href="javascript:;"
+            @click="changeView('discountcode')"
           >
             DISCOUNT CODE
-          </a>
+          </BaseButton>
         </li>
       </ul>
       <component :is="view"></component>

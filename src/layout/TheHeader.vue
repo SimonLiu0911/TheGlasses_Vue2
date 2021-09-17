@@ -22,7 +22,9 @@
             class="nav-item mr-2 ml-2"
             :class="{ 'active': currentPage === menu.alias }"
           >
-            <router-link class="nav-link" :to="{ name:menu.alias }">{{ menu.name }}</router-link>
+            <BaseButton class="nav-link" :to="{ name:menu.alias }">
+              {{ menu.name }}
+            </BaseButton>
           </li>
         </ul>
       </div>
