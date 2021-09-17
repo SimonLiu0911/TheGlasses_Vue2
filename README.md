@@ -9,6 +9,7 @@ TBD
 2. 建立一個layout底層
 3. 新增plugin: Bootstrap-notify
 4. 使用全局註冊: Base
+5. 使用utils
 
 ## Project setup
 ```
