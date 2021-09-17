@@ -1,6 +1,10 @@
 <template>
-  <nav id="navBar" :class="$style['navbar_style']" class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
+  <nav
+    id="navBar"
+    :class="$style['navbar_style']"
+    class="navbar navbar-expand-lg navbar-light bg-white"
+  >
+    <div class="container-fluid">
       <button
         class="navbar-toggler"
         type="button"
@@ -9,7 +13,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse justify-content-center" id="navbar">
+      <div id="navbar" class="collapse navbar-collapse justify-content-center">
         <ul class="navbar-nav navbar-nav__position">
           <li
             v-for="(menu, index) in navbarMenus"
