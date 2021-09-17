@@ -22,6 +22,13 @@ window.$ = $;
 
 Vue.prototype.$bus = new Vue();
 
+// 千分號
+Vue.filter('thousands', function(num) {
+  const parts = num.toString().split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+});
+
 // 全局註冊Component
 const requireComponent = require.context(
   // 其組件目錄的相對路徑
