@@ -1,16 +1,17 @@
 <script>
+import * as utils from '@/store/utils';
+
 export default {
   components: {
-    Layout: () => import('@layout/main'),
-    ShopProduct: () => import('./components/ShopProduct.vue')
+    Layout: () => import('@layout/main')
+    // ShopProduct: () => import('./components/ShopProduct.vue')
   },
   data() {
     return {
       // fake data
-      // products: [],
       products: [
         {
-          id: '1',
+          id: 'ii2HiZVkpj8FHr2e8HqIMG0FiMGHXd7NWZmplQGJmtUGXWk5RGhOEVphUydBa4aM',
           title: 'Glasses Copper',
           category: 'Glasses',
           content: 'copper ingredient: 99.9%',
@@ -23,7 +24,7 @@ export default {
           unit: 'NT'
         },
         {
-          id: '2',
+          id: 'K3ZJ71y3xv4iPnV7w4yd3c5BEOdT1gVSExg6zDJHIQQZiIKNTFbe5OPQB6U8R7fV',
           title: 'Glasses Silver',
           category: 'Glasses',
           content: 'Silver ingredient: 80%',
@@ -36,20 +37,7 @@ export default {
           unit: 'NT'
         },
         {
-          id: '3',
-          title: 'Glasses Gold',
-          category: 'Glasses',
-          content: 'gold ingredient: 99.9%',
-          imageUrl: [
-            'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80'
-          ],
-          enabled: true,
-          origin_price: 3000,
-          price: 1999,
-          unit: 'NT'
-        },
-        {
-          id: '4',
+          id: 'YY2XEXvTN94so75dEHiOmYLTN73wT76dtuc3aDQXISAc7wQ4BQPnOMQgYVXUZM8v',
           title: 'Glasses Gold',
           category: 'Glasses',
           content: 'gold ingredient: 99.9%',
@@ -74,14 +62,27 @@ export default {
   },
   methods: {
     getFrontProducts(page = 1) {
-      console.log('trigger getFrontProducts');
+      console.log('getFrontProducts');
+      const config = {
+        method: 'GET',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/products`,
+        params: {
+          page: page
+        }
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        console.log(response);
+      });
     }
   },
   computed: {
-    getProduct() {
+    haveProduct() {
       if (this.products.length > 0) return true;
       return false;
     }
+  },
+  mounted() {
+    this.getFrontProducts();
   }
 };
 </script>
@@ -91,10 +92,9 @@ export default {
     <section id="shop">
       <div class="container my-2">
         <div class="row">
-          <template v-if="getProduct">
+          <template v-if="haveProduct">
             <div class="col-md-4 col-sm-6 mb-4" v-for="product in products" :key="product.id">
-              <ShopProduct :product="product"></ShopProduct>
-                <!-- <div class="card bg-white h-100">
+                <div class="card bg-white h-100">
                   <img :src="item.imageUrl" :class="$style.commidity_img" class="card-img-top" :alt="item.title" />
                   <div class="card-body">
                     <h5 class="card-title">{{ item.title }}</h5>
@@ -121,7 +121,7 @@ export default {
                       @click="onAddToCart(item)"
                     >Add to Cart</button>
                   </div>
-                </div> -->
+                </div>
             </div>
           </template>
           <template v-else>
@@ -132,7 +132,7 @@ export default {
         </div>
       </div>
     </section>
-    <template v-if="getProduct">
+    <template v-if="haveProduct">
       <BasePagination :pages="pagination" @update="getFrontProducts"></BasePagination>
     </template>
   </Layout>

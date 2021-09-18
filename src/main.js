@@ -1,6 +1,4 @@
 import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
 // Bootstrap4
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -14,6 +12,12 @@ import camelCase from 'lodash/camelCase';
 // FontAwesome
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
+// vue-axios
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+
+import App from './App.vue';
+import router from './router';
 
 Vue.config.productionTip = false;
 
@@ -21,6 +25,8 @@ window.jQuery = $;
 window.$ = $;
 
 Vue.prototype.$bus = new Vue();
+
+Vue.use(VueAxios, axios);
 
 // 千分號
 Vue.filter('thousands', function(num) {

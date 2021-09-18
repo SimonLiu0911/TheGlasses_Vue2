@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import * as $ from 'jquery';
 
 // Bootstrap-notify(http://bootstrap-growl.remabledesigns.com)
@@ -76,3 +77,28 @@ export function notifyAlert(msg, type, icon, title, url, target) {
     }
   );
 };
+
+/**
+ * Ajax other settings.
+ * post/patch: { 'method': 'post or patch', 'url': '/api/...', 'data': params }
+ * get: { 'method': 'get', 'url': '/api/...', 'params': urlParams }
+ * @param {*} config
+ * @param {*} nextFn  下一步驟執行的function
+ */
+export const vueAjaxSubmit = new Vue({
+  methods: {
+    ajaxSubmit(config, nextFn) {
+      this.$http(config)
+        .then((response) => {
+          if (response.status) {
+            // 下一步驟執行的function
+            nextFn(response.data);
+            $('body').removeClass('pending');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+});
