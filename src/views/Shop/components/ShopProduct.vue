@@ -1,5 +1,8 @@
 <script>
 export default {
+  components: {
+    ShopProductModal: () => import('./ShopProductModal.vue')
+  },
   props: {
     // card裡面的商品資訊
     product: {
@@ -8,9 +11,6 @@ export default {
         return {};
       }
     }
-  },
-  components: {
-    ShopProductModal: () => import('./ShopProductModal.vue')
   },
   data() {
     return {
