@@ -1,74 +1,101 @@
 
 <script>
+import * as utils from '@/store/utils';
+
 export default {
   components: {
     Layout: () => import('@layout/main')
   },
   data() {
     return {
-      cart: [
-        {
-          product: {
-            id: '1',
-            title: 'Glasses Copper',
-            category: 'Glasses',
-            content: 'copper ingredient: 99.9%',
-            imageUrl: [
-              'https://images.unsplash.com/photo-1591643529995-aef2e1e6f281?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60'
-            ],
-            enabled: true,
-            origin_price: 2000,
-            price: 999,
-            unit: 'NT'
-          },
-          quantity: 1,
-          created: {
-            diff: '12秒前',
-            datetime: '2021-09-17 17:04:56',
-            timestamp: 1631869496
-          },
-          updated: {
-            diff: '12秒前',
-            datetime: '2021-09-17 17:04:56',
-            timestamp: 1631869496
-          }
-        }
-      ],
-      cartTotal: 0,
-      shoppingBagItems: true
+      shoppingCart: [],
+      totalPrice: 0,
+      havingShoppingBagItems: true,
+      isLoading: false
     };
   },
   methods: {
+    // 取得購物車列表
+    getShoppingCart() {
+      this.isLoading = true;
+      const config = {
+        method: 'GET',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/shopping`
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        this.shoppingCart = response.data;
+        console.log(this.shoppingCart);
+        this.shoppingCart.forEach(item => {
+          this.totalPrice += item.product.price * item.quantity;
+        });
+        if (this.shoppingCart.length === 0) {
+          this.havingShoppingBagItems = false;
+        }
+        this.isLoading = false;
+      });
+    },
     onGoingCheckout() {
       console.log('onGoingCheckout');
     },
-    onRemoveAllCartItem() {
-      console.log('onRemoveAllCartItem');
+    // 刪除購物車全部資料
+    onDeleteAllCartItem() {
+      const config = {
+        method: 'DELETE',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/shopping/all/product`
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        console.log(response);
+        utils.notifyAlert(response.message, 'warning');
+        this.getShoppingCart();
+      });
+      console.log('onDeleteAllCartItem');
     },
-    onUpdateQuantity() {
-      console.log('onUpdateQuantity');
+    onUpdateQuantity(id, num) {
+      const config = {
+        method: 'PATCH',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/shopping`,
+        params: {
+          product: id,
+          quantity: num
+        }
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        console.log(response);
+        this.getShoppingCart();
+      });
     },
-    onrRemoveCartItem() {
-      console.log('onrRemoveCartItem');
+    // 刪除某一筆購物車資料
+    onDeleteCartItem(id) {
+      const config = {
+        method: 'DELETE',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/shopping/${id}`
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        utils.notifyAlert(response.message, 'warning');
+        this.getShoppingCart();
+      });
     }
+  },
+  mounted() {
+    this.getShoppingCart();
   }
 };
 </script>
 
 <template>
   <Layout>
-    <div class="cart">
-      <div class="row justify-content-center my-2">
-        <template v-if="shoppingBagItems">
+    <div :id="$style.cart">
+      <div class="row justify-content-center my-4">
+        <template v-if="havingShoppingBagItems">
           <div class="col-md-9">
             <div class="text-right mb-3">
-              <button
+              <BaseButton
                 type="button"
                 class="btn btn-outline-danger btn-sm rounded-0"
-                @click="onRemoveAllCartItem()"
+                @click="onDeleteAllCartItem()"
               >
                 Delete All
-              </button>
+              </BaseButton>
             </div>
             <table class="table text-center">
               <thead>
@@ -78,8 +105,8 @@ export default {
                 <th>Unit</th>
                 <th>Delete</th>
               </thead>
-              <tbody v-if="cart.length">
-                <tr v-for="item in cart" :key="item.id">
+              <tbody v-if="shoppingCart.length">
+                <tr v-for="item in shoppingCart" :key="item.id">
                   <td class="align-middle">{{ item.product.title }}</td>
                   <td class="align-middle">
                     <div class="input-group bg-light">
@@ -87,9 +114,7 @@ export default {
                         <button
                           class="btn btn-outline-dark"
                           type="button"
-                          @click="
-                            onUpdateQuantity(item.product.id, item.quantity - 1)
-                          "
+                          @click="onUpdateQuantity(item.product.id, item.quantity - 1)"
                           :disabled="item.quantity === 1"
                         >
                           -
@@ -125,7 +150,7 @@ export default {
                     <button
                       type="button"
                       class="btn btn-outline-danger btn-sm rounded-0"
-                      @click="onrRemoveCartItem(item.product.id)"
+                      @click="onDeleteCartItem(item.product.id)"
                     >
                       Delete
                     </button>
@@ -133,14 +158,14 @@ export default {
                 </tr>
               </tbody>
             </table>
-            <div id="totalcart">
-              <div class="totalcart__table">
+            <div :class="$style.totalcart" class="float-right">
+              <div :class="$style.totalcart_table">
                 <table class="border-bottom">
                   <tbody>
                     <tr>
                       <th width="150px">Subtotal</th>
                       <td>
-                        <span>{{ cartTotal | thousands }}</span>
+                        <span>{{ totalPrice | thousands }}</span>
                       </td>
                     </tr>
                   </tbody>
@@ -154,7 +179,6 @@ export default {
                 </button>
               </div>
             </div>
-            <span class="clearBoth"></span>
           </div>
         </template>
         <template v-else>
@@ -165,7 +189,17 @@ export default {
         </template>
       </div>
       <!-- Vue Loading -->
-      <!-- <loading :active.sync="this.$store.state.isLoading"></loading> -->
+      <Loading :active.sync="this.isLoading"></Loading>
     </div>
   </Layout>
 </template>
+
+<style lang="scss" module>
+#cart {
+  .totalcart {
+    &_table {
+      font-size: 1.875rem;
+    }
+  }
+}
+</style>

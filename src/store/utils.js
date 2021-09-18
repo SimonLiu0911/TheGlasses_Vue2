@@ -89,15 +89,15 @@ export const vueAjaxSubmit = new Vue({
   methods: {
     ajaxSubmit(config, nextFn) {
       this.$http(config)
-        .then((response) => {
+        .then(response => {
           if (response.status) {
             // 下一步驟執行的function
             nextFn(response.data);
-            $('body').removeClass('pending');
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(error => {
+          notifyAlert(error.response.data.errors[0], 'danger');
+          console.log(error.response);
         });
     }
   }

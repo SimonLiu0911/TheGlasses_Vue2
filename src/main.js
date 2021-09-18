@@ -15,15 +15,19 @@ import '@fortawesome/fontawesome-free/js/all.js';
 // vue-axios
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+// vue-loading-overlay
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 import App from './App.vue';
 import router from './router';
 
 Vue.config.productionTip = false;
+Vue.use(Loading);
 
 window.jQuery = $;
 window.$ = $;
-
+// https://segmentfault.com/q/1010000015762223
 Vue.prototype.$bus = new Vue();
 
 Vue.use(VueAxios, axios);

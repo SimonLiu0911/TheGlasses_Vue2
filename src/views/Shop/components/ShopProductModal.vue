@@ -8,7 +8,7 @@ export default {
   },
   methods: {
     onAddToCart(singleProduct) {
-      console.log('onAddToCart', singleProduct);
+      this.$emit('onAddToCart', singleProduct);
     }
   }
 };

@@ -32,17 +32,31 @@ export default {
         }
       });
     },
-    onGetProductDetail(id) {
+    // 取得單一商品細節
+    onGetDetailProduct(id) {
       const config = {
         method: 'GET',
         url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/product/${id}`
       };
       utils.vueAjaxSubmit.ajaxSubmit(config, response => {
         this.singleProduct = response.data;
+        window.$('#single_product_modal').modal('show');
       });
     },
-    onAddToCart() {
-      console.log('onAddToCart');
+    // 新增某一筆購物車資料
+    onAddToCart(product, quantity = 1) {
+      const config = {
+        method: 'POST',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/shopping`,
+        params: {
+          product: product.id,
+          quantity
+        }
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        utils.notifyAlert(`已成功將 ${product.title} 放入購物車內`, 'success');
+        window.$('#single_product_modal').modal('hide');
+      });
     }
   },
   computed: {
@@ -83,9 +97,7 @@ export default {
                   <BaseButton
                     type="button"
                     class="btn btn-outline-secondary btn-sm rounded-0"
-                    data-toggle="modal"
-                    data-target="#single_product_modal"
-                    @click="onGetProductDetail(product.id)"
+                    @click="onGetDetailProduct(product.id)"
                   >
                     Detail
                   </BaseButton>
@@ -120,6 +132,7 @@ export default {
     <!-- Single Product Modal -->
     <ShopProductModal
       :single-product="singleProduct"
+      @onAddToCart="onAddToCart"
     ></ShopProductModal>
   </Layout>
 </template>
