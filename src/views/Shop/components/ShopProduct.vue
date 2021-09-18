@@ -1,4 +1,6 @@
 <script>
+import * as utils from '@/store/utils';
+
 export default {
   components: {
     ShopProductModal: () => import('./ShopProductModal.vue')
@@ -15,35 +17,18 @@ export default {
   data() {
     return {
       // Modal裡面的商品資訊
-      singleProduct: {
-        id: '1',
-        title: 'Glasses Copper',
-        category: 'Glasses',
-        content: 'copper ingredient: 99.9%',
-        description: 'The Glasses is made of copper.',
-        imageUrl: [
-          'https://images.unsplash.com/photo-1591643529995-aef2e1e6f281?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=900&q=60'
-        ],
-        enabled: true,
-        origin_price: 2000,
-        price: 999,
-        unit: 'NT',
-        created: {
-          diff: '1年前',
-          datetime: '2020-09-01 17:35:48',
-          timestamp: 1598952948
-        },
-        updated: {
-          diff: '1年前',
-          datetime: '2020-09-01 17:35:48',
-          timestamp: 1598952948
-        }
-      }
+      singleProduct: {}
     };
   },
   methods: {
-    onGetDetailed() {
-      console.log('onGetDetailed');
+    onGetProductDetail(id) {
+      const config = {
+        method: 'GET',
+        url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/product/${id}`
+      };
+      utils.vueAjaxSubmit.ajaxSubmit(config, response => {
+        this.singleProduct = response.data;
+      });
     },
     onAddToCart() {
       console.log('onAddToCart');
@@ -74,7 +59,7 @@ export default {
         class="btn btn-outline-secondary btn-sm rounded-0"
         data-toggle="modal"
         data-target="#single_product_modal"
-        @click="onGetDetailed(product)"
+        @click="onGetProductDetail(product.id)"
       >
         Detail
       </BaseButton>

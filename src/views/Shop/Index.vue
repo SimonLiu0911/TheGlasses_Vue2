@@ -11,12 +11,12 @@ export default {
     return {
       products: [],
       pagination: {},
-      singleProduct: {}
+      singleProduct: {},
+      noProduct: false
     };
   },
   methods: {
     getFrontProducts(page = 1) {
-      console.log('getFrontProducts');
       const config = {
         method: 'GET',
         url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/products`,
@@ -27,7 +27,9 @@ export default {
       utils.vueAjaxSubmit.ajaxSubmit(config, response => {
         this.products = response.data;
         this.pagination = response.meta.pagination;
-        console.log(response);
+        if (this.products.length === 0) {
+          this.noProduct = true;
+        }
       });
     },
     onGetProductDetail(id) {
@@ -98,9 +100,14 @@ export default {
                 </div>
             </div>
           </template>
-          <template v-else>
+          <template v-else-if="noProduct">
             <h2 class="m-auto p-5">
               暫無商品
+            </h2>
+          </template>
+          <template v-else>
+            <h2 class="m-auto p-5">
+              商品載入中...
             </h2>
           </template>
         </div>

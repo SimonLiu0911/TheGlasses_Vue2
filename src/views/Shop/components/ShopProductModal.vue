@@ -3,10 +3,7 @@ export default {
   props: {
     singleProduct: {
       type: Object,
-      require: true,
-      default() {
-        return {};
-      }
+      require: true
     }
   },
   methods: {
