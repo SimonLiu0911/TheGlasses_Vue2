@@ -3,7 +3,7 @@
     <ul class="pagination justify-content-center">
       <li class="page-item" :class="{ disabled: pages.current_page === 1 }">
         <BaseButton
-          class="page-link"
+          class="page-link border-0  bg-transparent text-dark shadow-none"
           href="javascript:;"
           @click="updatePage(pages.current_page - 1)"
         >
@@ -17,7 +17,7 @@
         :key="i"
       >
         <BaseButton
-          class="page-link"
+          class="page-link border-0 bg-transparent text-dark shadow-none"
           href="javascript:;"
           @click="updatePage(i)"
         >
@@ -26,7 +26,7 @@
       </li>
       <li class="page-item" :class="{ disabled: pages.current_page ===  pages.total_pages}">
         <BaseButton
-          class="page-link"
+          class="page-link border-0  bg-transparent text-dark shadow-none"
           href="javascript:;"
           @click="updatePage(pages.current_page + 1)"
         >
@@ -65,6 +65,9 @@ export default {
     .page-item {
       &:hover {
         cursor: pointer;
+      }
+      &.active {
+        font-weight: bolder;
       }
     }
   }

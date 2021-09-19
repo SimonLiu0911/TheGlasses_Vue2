@@ -63,13 +63,13 @@
             placeholder="Enter your email"
             v-model="subscription.email"
           />
-          <button
+          <BaseButton
             :class="$style.subscribe_btn"
             type="button"
             @click="onSubscribe"
           >
             Confirm
-          </button>
+          </BaseButton>
         </form>
       </section>
     </div>

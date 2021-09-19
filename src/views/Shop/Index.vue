@@ -12,11 +12,13 @@ export default {
       products: [],
       pagination: {},
       singleProduct: {},
-      noProduct: false
+      noProduct: false,
+      isLoading: false
     };
   },
   methods: {
     getFrontProducts(page = 1) {
+      this.isLoading = true;
       const config = {
         method: 'GET',
         url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/products`,
@@ -30,6 +32,7 @@ export default {
         if (this.products.length === 0) {
           this.noProduct = true;
         }
+        this.isLoading = false;
       });
     },
     // 取得單一商品細節
@@ -114,12 +117,12 @@ export default {
           </template>
           <template v-else-if="noProduct">
             <h2 class="m-auto p-5">
-              暫無商品
+              No Commodity
             </h2>
           </template>
           <template v-else>
             <h2 class="m-auto p-5">
-              商品載入中...
+              Commodity is loading...
             </h2>
           </template>
         </div>
@@ -134,6 +137,9 @@ export default {
       :single-product="singleProduct"
       @onAddToCart="onAddToCart"
     ></ShopProductModal>
+
+    <!-- Vue Loading -->
+    <Loading :active.sync="this.isLoading"></Loading>
   </Layout>
 </template>
 

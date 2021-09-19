@@ -24,7 +24,7 @@ export default {
       };
       utils.vueAjaxSubmit.ajaxSubmit(config, response => {
         this.shoppingCart = response.data;
-        console.log(this.shoppingCart);
+        this.totalPrice = 0;
         this.shoppingCart.forEach(item => {
           this.totalPrice += item.product.price * item.quantity;
         });
@@ -44,11 +44,9 @@ export default {
         url: `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/shopping/all/product`
       };
       utils.vueAjaxSubmit.ajaxSubmit(config, response => {
-        console.log(response);
         utils.notifyAlert(response.message, 'warning');
         this.getShoppingCart();
       });
-      console.log('onDeleteAllCartItem');
     },
     onUpdateQuantity(id, num) {
       const config = {
@@ -60,7 +58,6 @@ export default {
         }
       };
       utils.vueAjaxSubmit.ajaxSubmit(config, response => {
-        console.log(response);
         this.getShoppingCart();
       });
     },
@@ -111,14 +108,14 @@ export default {
                   <td class="align-middle">
                     <div class="input-group bg-light">
                       <div class="input-group-append">
-                        <button
+                        <BaseButton
                           class="btn btn-outline-dark"
                           type="button"
                           @click="onUpdateQuantity(item.product.id, item.quantity - 1)"
                           :disabled="item.quantity === 1"
                         >
                           -
-                        </button>
+                        </BaseButton>
                       </div>
                       <input
                         type="text"
@@ -130,15 +127,13 @@ export default {
                         disabled
                       />
                       <div class="input-group-prepend">
-                        <button
+                        <BaseButton
                           class="btn btn-outline-dark"
                           type="button"
-                          @click="
-                            onUpdateQuantity(item.product.id, item.quantity + 1)
-                          "
+                          @click="onUpdateQuantity(item.product.id, item.quantity + 1)"
                         >
                           +
-                        </button>
+                        </BaseButton>
                       </div>
                     </div>
                   </td>
@@ -147,13 +142,13 @@ export default {
                   </td>
                   <td class="align-middle">{{ item.product.unit }}</td>
                   <td class="align-middle">
-                    <button
+                    <BaseButton
                       type="button"
                       class="btn btn-outline-danger btn-sm rounded-0"
                       @click="onDeleteCartItem(item.product.id)"
                     >
                       Delete
-                    </button>
+                    </BaseButton>
                   </td>
                 </tr>
               </tbody>
@@ -170,13 +165,14 @@ export default {
                     </tr>
                   </tbody>
                 </table>
-                <button
+                <BaseButton
                   type="button"
                   class="btn btn-dark btn-block rounded-0 mt-2"
                   @click="onGoingCheckout"
+                  :to="{ name: 'Checkout' }"
                 >
                   CHECKOUT
-                </button>
+                </BaseButton>
               </div>
             </div>
           </div>
@@ -188,6 +184,7 @@ export default {
           </div>
         </template>
       </div>
+
       <!-- Vue Loading -->
       <Loading :active.sync="this.isLoading"></Loading>
     </div>
