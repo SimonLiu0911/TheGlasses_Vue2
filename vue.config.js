@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  publicPath: './',
 	//   lintOnSave: false, //關閉eslint檢查
 	productionSourceMap: false,
 	css: {
@@ -17,6 +18,12 @@ module.exports = {
     https://cli.vuejs.org/zh/guide/html-and-static-assets.html#从相对路径导入
   */
 	chainWebpack: config => {
+    config
+      .plugin('html')
+            .tap(args => {
+                args[0].title = "The Glass";
+                return args;
+            }),
 		config.module
 			.rule('images')
 			.use('url-loader')
