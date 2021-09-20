@@ -165,7 +165,9 @@ export default {
                     <tr>
                       <th width="150px">Subtotal</th>
                       <td>
-                        <span>{{ totalPrice | thousands }}</span>
+                        <span>
+                          {{ totalPrice | thousands }} <em>NT</em>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
