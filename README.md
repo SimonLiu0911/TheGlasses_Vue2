@@ -10,6 +10,7 @@ TBD
 3. 新增plugin: Bootstrap-notify
 4. 使用全局註冊: Base
 5. 使用utils
+6. scss使用module
 
 ## Project setup
 ```

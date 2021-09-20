@@ -34,6 +34,7 @@ export default {
         this.isLoading = false;
       });
     },
+    // TODO
     onGoingCheckout() {
       console.log('onGoingCheckout');
     },
@@ -48,6 +49,7 @@ export default {
         this.getShoppingCart();
       });
     },
+    // 更新某一筆購物車資料
     onUpdateQuantity(id, num) {
       const config = {
         method: 'PATCH',
@@ -71,6 +73,9 @@ export default {
         utils.notifyAlert(response.message, 'warning');
         this.getShoppingCart();
       });
+    },
+    onChangeComodityQty(id) {
+      this.onUpdateQuantity(id, window.$(this.$refs.commodityQty[0]).val());
     }
   },
   mounted() {
@@ -121,11 +126,11 @@ export default {
                         type="text"
                         class="form-control text-center"
                         :value="item.quantity"
-                        @keyup.enter="
-                          onUpdateQuantity(item.product.id, $event.target.value)
-                        "
-                        disabled
+                        ref="commodityQty"
+                        @keyup.enter="onUpdateQuantity(item.product.id, $event.target.value)"
+                        @change="onChangeComodityQty(item.product.id)"
                       />
+                      <!-- test -->
                       <div class="input-group-prepend">
                         <BaseButton
                           class="btn btn-outline-dark"

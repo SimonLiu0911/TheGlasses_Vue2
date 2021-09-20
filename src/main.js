@@ -18,6 +18,10 @@ import VueAxios from 'vue-axios';
 // vue-loading-overlay
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+// VeeValidate
+import { ValidationProvider, ValidationObserver, configure } from 'vee-validate/dist/vee-validate.full';
+// select2
+import 'select2';
 
 import App from './App.vue';
 import router from './router';
@@ -32,6 +36,20 @@ window.$ = $;
 Vue.prototype.$bus = new Vue();
 
 Vue.use(VueAxios, axios);
+
+// VeeValidate
+Vue.component('validation-provider', ValidationProvider);
+Vue.component('validation-observer', ValidationObserver);
+// VeeValidate Class 設定檔案
+configure({
+  classes: {
+    valid: 'is-valid',
+    invalid: 'is-invalid'
+  }
+});
+
+// Select2 default config
+$.fn.select2.defaults.set('theme', 'bootstrap4');
 
 // 千分號
 Vue.filter('thousands', function(num) {
