@@ -1,22 +1,39 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import lazyLoadView from '@/router/lazyload-view';
 
 Vue.use(VueRouter);
 
 const routes = [
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: () => lazyLoadView(import('@/views/Home/Index.vue'))
+  // },
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'About',
+    component: () => lazyLoadView(import('@/views/About/Index'))
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/shop',
+    name: 'Shop',
+    component: () => lazyLoadView(import('@/views/Shop/Index'))
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => lazyLoadView(import('@/views/Cart/Index'))
+  },
+  {
+    path: '/FAQ',
+    name: 'Faq',
+    component: () => lazyLoadView(import('@/views/Faq/Index'))
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: () => import('@/views/Checkout/Index')
   }
 ];
 
