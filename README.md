@@ -2,7 +2,7 @@
 此作品為虛擬購物商店，銷售主題為Glasses，並包含前台API串接。
 
 ## Demo:
-TBD
+https://simonliu0911.github.io/TheGlasses_Vue2/#/
 
 ## 重構部分:
 1. 利用lazyload-view加載每個頁面

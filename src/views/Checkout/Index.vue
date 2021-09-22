@@ -9,7 +9,7 @@ export default {
     return {
       shoppingCart: [],
       totalPrice: 0,
-      cartTotalAfterCoupon: 0,
+      totalPriceAfterCoupon: 0,
       saveMoney: 0,
       form: {
         name: '',
@@ -40,8 +40,8 @@ export default {
       ],
       applyCoupon: false,
       couponEnabled: '',
-      completed: false,
       priceAfterCoupon: '',
+      completed: false,
       isLoading: false
     };
   },
@@ -74,16 +74,45 @@ export default {
         }
       };
       utils.vueAjaxSubmit.ajaxSubmit(config, response => {
-        console.log('訂單已傳送！！！');
         this.isLoading = false;
         this.completed = true;
         utils.notifyAlert('Success to order', 'success');
       });
       this.isLoading = true;
     },
-    searchCoupon() {
-      console.log('searchCoupon');
+    async onSearchCoupon() {
+      this.isLoading = true;
+      if (this.form.coupon) {
+        const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_UUID}/ec/coupon/search`;
+        this.$http.post(url, { code: this.form.coupon }).then((response) => {
+          this.couponEnabled = response.data.data.enabled;
+          if (this.couponEnabled) {
+            this.totalPriceafterCoupon = Math.ceil(this.totalPrice * (response.data.data.percent / 100));
+            this.saveMoney = this.totalPrice - this.totalPriceafterCoupon;
+            this.applyCoupon = true;
+            this.isLoading = false;
+          } else {
+            utils.notifyAlert('Can not Use Coupon Code.', 'danger');
+            this.form.coupon = '';
+            this.applyCoupon = false;
+            this.isLoading = false;
+          }
+        })
+          .catch(() => {
+            utils.notifyAlert('This coupon is not exist!', 'danger');
+            this.form.coupon = '';
+            this.applyCoupon = false;
+            this.isLoading = false;
+          });
+      } else {
+        utils.notifyAlert('Need Coupon Code!!', 'warning');
+        this.form.coupon = '';
+        this.applyCoupon = false;
+        this.isLoading = false;
+      }
     }
+  },
+  computed: {
   },
   created() {
     this.getShoppingCart();
@@ -269,7 +298,7 @@ export default {
               <BaseButton
                 type="button"
                 class="btn btn-dark rounded-0"
-                @click="searchCoupon"
+                @click="onSearchCoupon"
               >
                 APPLY
               </BaseButton>
@@ -285,7 +314,7 @@ export default {
                           {{ totalPrice | thousands }} <em>NT</em>
                         </span>
                         <span class="text-danger" v-else>
-                          {{ cartTotalAfterCoupon | thousands }} <em>NT</em>
+                          {{ totalPriceafterCoupon | thousands }} <em>NT</em>
                         </span>
                       </td>
                     </tr>
