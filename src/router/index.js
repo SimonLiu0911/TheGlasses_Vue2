@@ -33,7 +33,12 @@ const routes = [
   {
     path: '/checkout',
     name: 'Checkout',
-    component: () => import('@/views/Checkout/Index')
+    component: () => lazyLoadView(import('@/views/Checkout/Index'))
+  },
+  {
+    path: '*',
+    name: '404',
+    conponent: () => lazyLoadView(import('@/views/404'))
   }
 ];
 
